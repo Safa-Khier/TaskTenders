@@ -62,6 +62,6 @@ flutter run
 ```
 
 ## Documentation
-- [Project Book](https://link-to-your-document)
-- [Presentation Slides]([https://link-to-your-presentation](https://github.com/Safa-Khier/TaskTenders/raw/main/docs/Project_Presentation.pptx))
+- [Project Book](https://github.com/Safa-Khier/TaskTenders/raw/main/docs/%D7%A1%D7%A4%D7%A8_%D7%A4%D7%A8%D7%95%D7%99%D7%A7%D7%98.docx)
+- [Presentation Slides](https://github.com/Safa-Khier/TaskTenders/raw/main/docs/Project_Presentation.pptx)
 
