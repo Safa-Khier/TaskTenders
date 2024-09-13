@@ -13,6 +13,7 @@ interaction through a transparent bidding system, real-time communication, and s
 -   [Contributing](#contributing)
 -   [License](#license)
 -   [Contact](#contact)
+-   [Documentation](#documentation)
 
 ## Introduction
 
@@ -59,3 +60,8 @@ npm start
 # Run the frontend application
 flutter run
 ```
+
+## Documentation
+- [Project Book](https://link-to-your-document)
+- [Presentation Slides]([https://link-to-your-presentation](https://github.com/Safa-Khier/TaskTenders/raw/main/docs/Project_Presentation.pptx))
+
