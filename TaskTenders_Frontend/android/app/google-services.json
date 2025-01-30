@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "872291630003",
+    "project_id": "tasktenders-1",
+    "storage_bucket": "tasktenders-1.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:872291630003:android:b0b53123a1547447bea9c6",
+        "android_client_info": {
+          "package_name": "com.example.flutter_application_4"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCeHIJQsxf8o_YwoIG5DRN06b8EPIt3SvM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

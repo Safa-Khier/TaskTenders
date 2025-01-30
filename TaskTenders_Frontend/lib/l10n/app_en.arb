@@ -1,0 +1,36 @@
+{
+  "@@locale": "en",
+  "appName": "TaskTenders",
+
+  "@@comment": "Intro Screen",
+  "jobTitle": "POST A JOB",
+  "jobDescription": "Quickly create job listings with clear descriptions, required skills, and budget, connecting you directly with qualified freelancers.",
+
+  "biddingTitle": "BIDDING SYSTEM",
+  "biddingDescription": "Feature Enables freelancers to submit competitive bids on projects, providing clients with a range of options to choose the best fit based on expertise and budget.",
+
+  "paymentTitle": "SECURE PAYMENT",
+  "paymentDescription": "Ensures all transactions are protected with advanced encryption and an escrow system, guaranteeing safe and reliable payment upon job completion.",
+
+  "encryptionTitle": "ENCRYPTED SENSITIVE DATA",
+  "encryptionDescription": "Safeguards all personal and financial information using state-of-the-art encryption technologies to ensure data privacy and security.",
+
+  "aiTitle": "AI INTEGRATION",
+  "aiDescription": "TaskTenders harnesses advanced AI algorithms to expertly match freelancers with projects, ensuring a seamless and personalized experience for every user.",
+
+
+  "@@comment": "Login Screen",
+  "welcome": "Welcome",
+  "gladToSeeYou": "Glad to see you!",
+  "email": "Email",
+  "password": "Password",
+  "login": "Login",
+  "forgotPassword": "Forgot your Password?",
+  "loginUsing": "Or log In using",
+  "noAccount": "Don't have an account?",
+  "signUpNow": "Sign Up Now",
+
+  "emptyFieldsError": "Please fill in all fields",
+
+  "signUp": "Sign Up"
+}
