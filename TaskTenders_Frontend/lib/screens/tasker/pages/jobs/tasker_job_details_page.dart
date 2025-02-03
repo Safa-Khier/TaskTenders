@@ -51,6 +51,24 @@ class _TaskerJobDetailsPageState extends State<TaskerJobDetailsPage> {
     super.dispose();
   }
 
+  Bid? getLastUserBid() {
+    final userBids =
+        bids.where((bid) => bid.taskerId == _userService.getUserUid());
+    if (userBids.isEmpty) {
+      return null;
+    }
+    return userBids.first;
+  }
+
+  Bid? getLowestBid() {
+    if (bids.isEmpty) {
+      return null;
+    }
+    final Bid lowestBid =
+        bids.reduce((a, b) => a.bidAmount < b.bidAmount ? a : b);
+    return lowestBid;
+  }
+
   void _refreshJobs() {
     setState(() {
       isLoading = true;
@@ -155,6 +173,7 @@ class _TaskerJobDetailsPageState extends State<TaskerJobDetailsPage> {
                     _buildDetailRow(context, 'Job Type', widget.job.jobType),
                     SizedBox(height: 8),
                     DisplayLocation(
+                      borderRadius: 6,
                       selectedPoint: widget.job.location,
                       height: 200,
                     ),
@@ -199,10 +218,11 @@ class _TaskerJobDetailsPageState extends State<TaskerJobDetailsPage> {
                         MainButton(
                             context: context,
                             isOutlined: true,
-                            onPressed: () {
+                            onPressed: () async {
                               LoadingService.showLoadingIndicator(context);
                               final clientId = widget.job.userId;
-                              final clientName = 'Client';
+                              final clientName = await _userService
+                                  .getUserNameById(widget.job.userId);
                               final taskerId = _userService.getUserUid();
                               final taskerName = _userService.getUserName();
 
@@ -302,6 +322,8 @@ class _TaskerJobDetailsPageState extends State<TaskerJobDetailsPage> {
   Widget _buildBidInfoCard(
     BuildContext context,
   ) {
+    final Bid? lowestBid = getLowestBid();
+    final Bid? lastBid = getLastUserBid();
     return Container(
       // elevation: 2,
       decoration: BoxDecoration(
@@ -317,29 +339,28 @@ class _TaskerJobDetailsPageState extends State<TaskerJobDetailsPage> {
           children: [
             // Highest Bid
 
-            // TODO: Implement the lowest bid
             _buildBidInfoRow(
                 context,
-                'Lowest Bid',
-                false
-                    ? '\$${widget.job.price.toStringAsFixed(2)}'
-                    : 'No bids yet'),
+                'Lowest Offer',
+                lowestBid != null
+                    ? '\$${lowestBid.bidAmount.toStringAsFixed(2)}'
+                    : 'No offers yet'),
             SizedBox(height: 8),
 
             // User's Last Bid
             _buildBidInfoRow(
                 context,
-                'Your Last Bid',
+                'Your Last Offer',
                 isLoading
                     ? 'Loading...'
-                    : bids.isNotEmpty
-                        ? '\$${bids[0].bidAmount.toStringAsFixed(2)}'
+                    : lastBid != null
+                        ? '\$${lastBid.bidAmount.toStringAsFixed(2)}'
                         : 'No previous bid'),
             SizedBox(height: 8),
 
             // Max Bid Allowed
-            _buildBidInfoRow(context, 'Max Bid Allowed',
-                '\$${_maxBidAllowed.toStringAsFixed(2)}'),
+            _buildBidInfoRow(context, 'Max Allowed Offer Amount',
+                '\$${widget.job.price.toStringAsFixed(2)}'),
           ],
         ),
       ),

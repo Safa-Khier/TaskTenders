@@ -111,7 +111,8 @@ class _DisplayLocationState extends State<DisplayLocation> {
               color: Theme.of(context)
                   .extension<CustomThemeExtension>()
                   ?.listItemBackground,
-              borderRadius: BorderRadius.all(Radius.circular(15)),
+              borderRadius:
+                  BorderRadius.all(Radius.circular(widget.borderRadius)),
             ),
             height: widget.height,
             child: _loading

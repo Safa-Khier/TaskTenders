@@ -144,7 +144,7 @@ class _JobDetailsTabState extends State<JobDetailsTab> {
                             widget.job.status == 'completed'),
                   ],
                 ],
-                if (widget.job.status == 'completed') ...[
+                if (widget.job.status == 'completed' && isAccepted) ...[
                   _buildStep(context, 'Job Completed',
                       subtext: widget.job.completedAt != null
                           ? DateFormat('MMM dd, yyyy - HH:mm')

@@ -7,7 +7,6 @@ import 'package:tasktender_frontend/screens/shared/job_chat_tab.dart';
 import 'package:tasktender_frontend/screens/tasker/pages/jobs/applied_job/job_details_tab.dart';
 import 'package:tasktender_frontend/services/job.service.dart';
 import 'package:tasktender_frontend/services/locator.service.dart';
-import 'package:tasktender_frontend/widgets/pick_location.dart';
 
 @RoutePage()
 class TaskerAppliedJobScreen extends StatefulWidget {

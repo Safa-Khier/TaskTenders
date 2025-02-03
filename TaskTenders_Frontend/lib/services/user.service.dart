@@ -18,69 +18,7 @@ class UserService {
 
   final PreferencesService _preferencesService = PreferencesService();
 
-  UserService() {
-    // _auth.signOut();
-    final List<Map<String, dynamic>> mockJobs = [
-      {
-        "id": "job_1",
-        "userId": "user_123",
-        "offerId": null,
-        "title": "Plumbing Repair",
-        "description": "Fix a leaking sink in the kitchen.",
-        "jobType": "regular",
-        "categoryId": "home_repair",
-        "bidders": [],
-        "updates": [],
-        "offerAcceptedAt": null,
-        "isReviewSubmitted": false,
-        "completedAt": null,
-        "location": GeoPoint(32.0853, 34.7818), // Tel Aviv
-        "price": 250.0,
-        "status": "open",
-      },
-      {
-        "id": "job_2",
-        "userId": "user_456",
-        "offerId": null,
-        "title": "Furniture Assembly",
-        "description": "Assemble a new IKEA wardrobe.",
-        "jobType": "regular",
-        "categoryId": "furniture_assembly",
-        "bidders": [],
-        "updates": [],
-        "offerAcceptedAt": null,
-        "isReviewSubmitted": false,
-        "completedAt": null,
-        "location": GeoPoint(31.7683, 35.2137), // Jerusalem
-        "price": 180.0,
-        "status": "open",
-      },
-      {
-        "id": "job_3",
-        "userId": "user_789",
-        "offerId": null,
-        "title": "Painting Service",
-        "description": "Need a professional to paint one room.",
-        "jobType": "tender",
-        "categoryId": "painting",
-        "bidders": [],
-        "updates": [],
-        "offerAcceptedAt": null,
-        "isReviewSubmitted": false,
-        "completedAt": null,
-        "location": GeoPoint(32.7940, 34.9896), // Haifa
-        "price": 400.0,
-        "status": "open",
-      },
-    ];
-    // try {
-    //   mockJobs.forEach((job) async {
-    //     _firestore.collection('jobs').doc(job['id']).set(job);
-    //   });
-    // } catch (e) {
-    //   log('Error adding mock jobs: $e');
-    // }
-  }
+  UserService();
 
   bool isAuthenticated() {
     return _auth.currentUser != null;
@@ -308,5 +246,10 @@ class UserService {
     } catch (e) {
       log('Error submitting review: $e');
     }
+  }
+
+  Future<String> getUserNameById(String userId) async {
+    final user = await getUserDetails(userId);
+    return '${user?.firstName} ${user?.lastName}';
   }
 }

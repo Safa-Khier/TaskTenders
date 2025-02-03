@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:tasktender_frontend/models/bids.model.dart';
 import 'package:tasktender_frontend/models/job.model.dart';
 import 'package:tasktender_frontend/services/job.service.dart';
@@ -49,6 +48,24 @@ class _CreateBidScreenState extends State<CreateOfferSheet> {
     _bidAmountController.dispose();
     _coverLetterController.dispose();
     super.dispose();
+  }
+
+  Bid? getLastUserBid() {
+    final userBids =
+        bids.where((bid) => bid.taskerId == _userService.getUserUid());
+    if (userBids.isEmpty) {
+      return null;
+    }
+    return userBids.first;
+  }
+
+  Bid? getLowestBid() {
+    if (bids.isEmpty) {
+      return null;
+    }
+    final Bid lowestBid =
+        bids.reduce((a, b) => a.bidAmount < b.bidAmount ? a : b);
+    return lowestBid;
   }
 
   void _submitBid() {
@@ -147,7 +164,7 @@ class _CreateBidScreenState extends State<CreateOfferSheet> {
                   controller: _bidAmountController,
                   decoration: InputDecoration(
                     labelText: widget.job.jobType == 'tender'
-                        ? 'Bid Amount'
+                        ? 'Offer Amount'
                         : 'Proposed Price',
                     prefixText: '\$',
                     border: OutlineInputBorder(
@@ -225,6 +242,9 @@ class _CreateBidScreenState extends State<CreateOfferSheet> {
 
   // Bid Information Card
   Widget _buildBidInfoCard() {
+    final Bid? lowestBid = getLowestBid();
+    final Bid? lastBid = getLastUserBid();
+
     return Card(
       elevation: 2,
       child: Padding(
@@ -235,25 +255,25 @@ class _CreateBidScreenState extends State<CreateOfferSheet> {
             // Highest Bid
 
             _buildBidInfoRow(
-                'Lowest Bid',
-                false
-                    ? '\$${widget.job.price.toStringAsFixed(2)}'
+                'Lowest Offer',
+                lowestBid != null
+                    ? '\$${lowestBid.bidAmount.toStringAsFixed(2)}'
                     : 'No bids yet'),
             SizedBox(height: 8),
 
             // User's Last Bid
             _buildBidInfoRow(
-                'Your Last Bid',
+                'Your Last Offer',
                 isLoading
                     ? 'Loading...'
-                    : bids.isNotEmpty
-                        ? '\$${bids[0].bidAmount.toStringAsFixed(2)}'
-                        : 'No previous bid'),
+                    : lastBid != null
+                        ? '\$${lastBid.bidAmount.toStringAsFixed(2)}'
+                        : 'No previous Offer'),
             SizedBox(height: 8),
 
             // Max Bid Allowed
-            _buildBidInfoRow(
-                'Max Bid Allowed', '\$${_maxBidAllowed.toStringAsFixed(2)}'),
+            _buildBidInfoRow('Max Allowed Offer Amount',
+                '\$${widget.job.price.toStringAsFixed(2)}'),
           ],
         ),
       ),

@@ -1,11 +1,13 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:tasktender_frontend/models/job.model.dart';
+import 'package:tasktender_frontend/routes/app_router.gr.dart';
 import 'package:tasktender_frontend/screens/client/pages/history/create_job_sheet.dart';
 import 'package:tasktender_frontend/screens/shared/job_chat_tab.dart';
 import 'package:tasktender_frontend/screens/client/pages/history/job__details/job_details_tab.dart';
 import 'package:tasktender_frontend/screens/client/pages/history/job__details/job_offers_tab.dart';
 import 'package:tasktender_frontend/services/job.service.dart';
+import 'package:tasktender_frontend/services/loading.service.dart';
 import 'package:tasktender_frontend/services/locator.service.dart';
 import 'package:tasktender_frontend/widgets/list_item.dart';
 
@@ -116,14 +118,24 @@ class _JobDetailsPageState extends State<JobDetailsPage> {
                                         onPressed: () async {
                                           if (widget.job.id != null) {
                                             try {
+                                              LoadingService
+                                                  .showLoadingIndicator(
+                                                      context);
                                               await _jobService
                                                   .deleteJob(widget.job.id!);
 
-                                              context.router.popUntilRoot();
+                                              Navigator.pop(childContext);
+                                              Navigator.of(context).pop();
+
+                                              context.router.replace(
+                                                  const ClientHistoryRoute());
                                             } catch (error) {
                                               // Handle error (e.g., show a snackbar or log)
                                               debugPrint(
                                                   'Failed to delete job: $error');
+                                            } finally {
+                                              LoadingService
+                                                  .hideLoadingIndicator();
                                             }
                                           } else {
                                             debugPrint('Job id is null');

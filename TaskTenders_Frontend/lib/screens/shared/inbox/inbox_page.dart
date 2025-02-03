@@ -5,11 +5,13 @@ import 'package:tasktender_frontend/routes/app_router.gr.dart';
 import 'package:tasktender_frontend/screens/shared/loading_screen.dart';
 import 'package:tasktender_frontend/services/chat.service.dart';
 import 'package:tasktender_frontend/services/locator.service.dart';
+import 'package:tasktender_frontend/services/user.service.dart';
 import 'package:tasktender_frontend/widgets/chat_list_item.dart';
 // import 'package:tasktender_frontend/screens/shared/inbox/inbox_screen_placeholder.dart';
 
 @RoutePage()
 class InboxPage extends StatelessWidget {
+  final UserService _userService = locator<UserService>();
   final ChatService _chatService = locator<ChatService>();
 
   InboxPage({super.key});
@@ -61,9 +63,11 @@ class InboxPage extends StatelessWidget {
               itemBuilder: (context, index) {
                 final Chat chat = chats[index];
                 return ChatListItem(
-                    userName: chat.clientName,
-                    lastMessage: chat.lastMessage ?? '',
-                    date: chat.lastMessageTimestamp ?? DateTime.now(),
+                    userName: _userService.getUserRole() == 'client'
+                        ? chat.taskerName
+                        : chat.clientName,
+                    lastMessage: chat.lastMessage,
+                    date: chat.lastMessageTimestamp,
                     onPressed: () {
                       context.router
                           .push(ChatRoute(chat: chat, chatId: chat.id));

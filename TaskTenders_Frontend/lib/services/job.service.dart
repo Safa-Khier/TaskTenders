@@ -188,7 +188,7 @@ class JobService {
           .collection(_collectionName)
           .doc(jobId)
           .collection('bids')
-          .where('taskerId', isEqualTo: _userService.getUserUid())
+          // .where('taskerId', isEqualTo: _userService.getUserUid())
           // .orderBy('bidDate', descending: true)
           .get();
       return snapshot.docs
@@ -299,6 +299,27 @@ class JobService {
       });
     } catch (e) {
       print('Error completing job: $e');
+    }
+  }
+
+  Future<List<Job>> getBestMatchingJobs() async {
+    try {
+      final userId = _userService.getUserUid();
+      final snapshot = await _firestore
+          .collection('matching')
+          .where('tasker_id', isEqualTo: userId)
+          .get();
+
+      final jobIds = snapshot.docs
+          .map<String>((doc) => doc.data()['job_id'] as String)
+          .toList();
+
+      final jobs = await Future.wait(jobIds.map((jobId) => getJobById(jobId)));
+
+      return jobs.where((job) => job != null).map<Job>((job) => job!).toList();
+    } catch (e) {
+      print('Error getting best matching jobs: $e');
+      return [];
     }
   }
 }

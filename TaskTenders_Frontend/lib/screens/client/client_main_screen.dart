@@ -10,10 +10,11 @@ class ClientMainScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return AutoTabsScaffold(
       routes: [
-        ClientHomeRoute(),
+        // ClientHomeRoute(),
+        ClientHistoryRoute(),
         InboxRoute(),
         // ClientSearchRoute(),
-        ClientHistoryRoute(),
+
         ClientProfileRoute(),
       ],
       bottomNavigationBuilder: (context, tabsRouter) {
@@ -50,10 +51,10 @@ class ClientMainScreen extends StatelessWidget {
                 //   icon: Icon(Icons.search),
                 //   label: 'Search',
                 // ),
-                BottomNavigationBarItem(
-                  icon: Icon(Icons.card_giftcard),
-                  label: 'Orders',
-                ),
+                // BottomNavigationBarItem(
+                //   icon: Icon(Icons.card_giftcard),
+                //   label: 'Orders',
+                // ),
                 BottomNavigationBarItem(
                   icon: Icon(Icons.person_outlined),
                   activeIcon: Icon(Icons.person),

@@ -67,7 +67,13 @@ class AppRouter extends RootStackRouter {
           authGuard,
           roleGuard
         ], children: [
-          AutoRoute(page: TaskerHomeRoute.page, path: 'home'),
+          AutoRoute(
+              page: TakserHomeNavigationRoute.page,
+              path: 'home',
+              children: [
+                AutoRoute(page: TaskerHomeRoute.page, path: '', initial: true),
+                AutoRoute(page: TaskerJobDetailsRoute.page, path: 'job/:id'),
+              ]),
           AutoRoute(
               page: TaskerSearchNavigationRoute.page,
               path: 'search',
@@ -80,6 +86,7 @@ class AppRouter extends RootStackRouter {
               ]),
           AutoRoute(page: InboxNavigationRoute.page, path: 'inbox', children: [
             AutoRoute(page: InboxRoute.page, path: '', initial: true),
+
             // AutoRoute(page: ChatRoute.page, path: 'chat/:userId'),
           ]),
           AutoRoute(

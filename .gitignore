@@ -48,3 +48,4 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 /ios/Flutter/TaskTenders_Frontend/firebase/functions/src/tasktenders-1-firebase-adminsdk-k43td-5cb02e9f4d.json
+TaskTenders_Frontend/firebase/functions/lib/tasktenders-1-firebase-adminsdk-k43td-5cb02e9f4d.json

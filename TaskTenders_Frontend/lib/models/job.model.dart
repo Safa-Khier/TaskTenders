@@ -27,8 +27,6 @@ class Job {
   LatLng location;
   double price;
   String status;
-  // bid list for tender jobs { bidderId, price, date, status, description }
-
   DateTime? deadline;
   DateTime createdAt;
   List<String> tags;
