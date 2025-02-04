@@ -29,14 +29,13 @@ class _CreateJobSheetState extends State<CreateJobSheet> {
 
   final List<String> _tags = [];
   final TextEditingController _tagController = TextEditingController();
-  final List<String> _options = ['Option 1', 'Option 2', 'Option 3'];
-  String? _selectedCategory;
   String? _selectedJobType;
   LatLng? _location;
 
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _categoryController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _budgetController = TextEditingController();
   DateTime? _deadlineDate;
@@ -51,7 +50,7 @@ class _CreateJobSheetState extends State<CreateJobSheet> {
       _titleController.text = job.title;
       _descriptionController.text = job.description;
       _selectedJobType = job.jobType;
-      _selectedCategory = job.categoryId;
+      _categoryController.text = job.categoryId;
       _budgetController.text = job.price.toString();
       _deadlineDate = job.deadline;
       _dateController.text = job.deadline.toString().split(' ')[0];
@@ -64,7 +63,7 @@ class _CreateJobSheetState extends State<CreateJobSheet> {
     if (_titleController.text.isEmpty ||
         _descriptionController.text.isEmpty ||
         _selectedJobType == null ||
-        _selectedCategory == null ||
+        _categoryController.text.isEmpty ||
         (_budgetController.text.isEmpty &&
             _selectedJobType != 'volunteering') ||
         _deadlineDate == null ||
@@ -258,19 +257,26 @@ class _CreateJobSheetState extends State<CreateJobSheet> {
                     //   ),
                     // ),
                     const SizedBox(height: 16),
-                    Select(
-                      initialSelection: _selectedCategory,
-                      label: Text('Category'),
-                      hintText: 'Select a category',
-                      options: _options,
-                      borderColor: Theme.of(context).primaryColor,
-                      onSelectionChanged: (p0) {
-                        setState(() {
-                          _selectedCategory = p0;
-                        });
+
+                    TextFormField(
+                      controller: _categoryController,
+                      decoration: InputDecoration(
+                        labelText: 'Category',
+                        alignLabelWithHint: true,
+                        hintText: 'Job Category',
+                        helperText: ' ',
+                        border: OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(15))),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please provide a job category';
+                        }
+                        return null;
                       },
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 16),
                     TextFormField(
                         readOnly: true,
                         controller: _dateController,
@@ -302,38 +308,7 @@ class _CreateJobSheetState extends State<CreateJobSheet> {
                       },
                       height: 400,
                     ),
-                    const SizedBox(height: 16),
-                    // ListTile(
-                    //   contentPadding: EdgeInsets.zero,
-                    //   title: Text(
-                    //     'Deadline',
-                    //     style: TextStyle(
-                    //       fontSize: 16,
-                    //       fontWeight: FontWeight.bold,
-                    //     ),
-                    //   ),
-                    // ),
-                    // TextField(
-                    //     controller: _dateController,
-                    //     readOnly: true,
-                    //     decoration: InputDecoration(
-                    //       hintText: 'Select Deadline',
-                    //       // hintStyle: TextStyle(fontWeight: FontWeight.bold),
-                    //       enabledBorder: OutlineInputBorder(
-                    //         // Border style when TextField is enabled
-                    //         borderRadius: BorderRadius.circular(15),
-                    //         borderSide:
-                    //             BorderSide(color: Color(0xFF999999), width: 1),
-                    //       ),
-                    //       focusedBorder: OutlineInputBorder(
-                    //         // Border style when TextField is focused
-                    //         borderRadius: BorderRadius.circular(15),
-                    //         borderSide:
-                    //             BorderSide(color: Color(0xFF999999), width: 2),
-                    //       ),
-                    //     ),
-                    //     onTap: () => _showDatePicker(context)),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 30),
                     StatefulBuilder(builder:
                         (BuildContext context, StateSetter setModalState) {
                       return Column(
@@ -422,7 +397,7 @@ class _CreateJobSheetState extends State<CreateJobSheet> {
                           element.name.split('.').last == _selectedJobType)
                       .name,
                   status: 'open',
-                  categoryId: _selectedCategory ?? '',
+                  categoryId: _categoryController.text,
                   price: price,
                   createdAt: DateTime.now(),
                   location: _location ?? LatLng(0, 0),

@@ -21,11 +21,8 @@ class _TaskerSearchPageState extends State<TaskerSearchPage> {
   final JobService _jobService = locator<JobService>();
 
   List<Job> jobs = [];
-  List<Job> filteredAppliedJobs = [];
   List<Job> filteredJobs = [];
-  List<Job> appliedJobs = [];
   bool _isLoading = true;
-  bool _hasMore = true;
   Job? lastJob;
 
   @override
@@ -33,63 +30,39 @@ class _TaskerSearchPageState extends State<TaskerSearchPage> {
     // TODO: implement initState
     super.initState();
     _refreshJobs();
-    // _jobService.getJobsForTaksers().then((jobs) {
-    //   setState(() {
-    //     this.jobs = jobs;
-    //   });
-    // }).whenComplete(() {
-    //   setState(() {
-    //     isLoading = false;
-    //   });
-    // });
-  }
-
-  Future<void> _refreshAppliedJobs() {
-    setState(() {
-      _isLoading = true;
-    });
-    return _jobService.getJobsForTasker().then((jobs) {
-      setState(() {
-        this.jobs.clear();
-        this.jobs.addAll(jobs);
-        filteredJobs = jobs;
-      });
-    }).whenComplete(() {
-      setState(() {
-        _isLoading = false;
-      });
-    });
   }
 
   void filterArray(String query) {
-    print('here');
-    setState(() {
-      filteredJobs = jobs.where((job) {
-        return job.title.toLowerCase().contains(query.toLowerCase()) ||
-            job.description.toLowerCase().contains(query.toLowerCase()) ||
-            job.jobType.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-      filteredAppliedJobs = appliedJobs.where((job) {
-        return job.title.toLowerCase().contains(query.toLowerCase()) ||
-            job.description.toLowerCase().contains(query.toLowerCase()) ||
-            job.jobType.toLowerCase().contains(query.toLowerCase());
-      }).toList();
-    });
+    if (mounted) {
+      setState(() {
+        filteredJobs = jobs.where((job) {
+          return job.title.toLowerCase().contains(query.toLowerCase()) ||
+              job.description.toLowerCase().contains(query.toLowerCase()) ||
+              job.jobType.toLowerCase().contains(query.toLowerCase());
+        }).toList();
+      });
+    }
   }
 
   Future<void> _refreshJobs() async {
-    setState(() {
-      _isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        _isLoading = true;
+      });
+    }
     await _jobService.getJobsForTaksers().then((jobs) {
-      setState(() {
-        this.jobs = jobs;
-        filteredJobs = jobs;
-      });
+      if (mounted) {
+        setState(() {
+          filteredJobs = jobs;
+          this.jobs = jobs;
+        });
+      }
     }).whenComplete(() {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     });
   }
 
@@ -130,33 +103,34 @@ class _TaskerSearchPageState extends State<TaskerSearchPage> {
         child: ListView.builder(
             itemCount: filteredJobs.length,
             itemBuilder: (context, index) {
-              if (index == 0) {
-                return Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
-                    child: MainInput(
-                        hintText: 'Search',
-                        borderRadius: 10,
-                        leadingIcon: Icons.search,
-                        trailingIcon: Icons.clear,
-                        fontSize: 13,
-                        height: 36,
-                        color: Color(0xFF999999),
-                        onTextChanged: (str) => filterArray(str)));
-              }
               if (_isLoading) {
                 return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
-              return TaskerJobCard(
-                onTap: () {
-                  context.router.push(TaskerJobDetailsRoute(
-                      jobId: filteredJobs[index].id!,
-                      job: filteredJobs[index]));
-                },
-                job: filteredJobs[index],
-              );
+              return Column(children: [
+                if (index == 0)
+                  Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 13, vertical: 8),
+                      child: MainInput(
+                          hintText: 'Search',
+                          borderRadius: 10,
+                          leadingIcon: Icons.search,
+                          trailingIcon: Icons.clear,
+                          fontSize: 13,
+                          height: 36,
+                          color: Color(0xFF999999),
+                          onTextChanged: (str) => filterArray(str))),
+                TaskerJobCard(
+                  onTap: () {
+                    context.router.push(TaskerJobDetailsRoute(
+                        jobId: filteredJobs[index].id!,
+                        job: filteredJobs[index]));
+                  },
+                  job: filteredJobs[index],
+                )
+              ]);
             })
         // )
         );

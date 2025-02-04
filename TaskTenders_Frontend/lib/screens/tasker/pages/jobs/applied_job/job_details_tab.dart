@@ -294,7 +294,7 @@ class _JobDetailsTabState extends State<JobDetailsTab> {
         showDragHandle: true,
         // barrierColor: Colors.transparent,
         isScrollControlled: true,
-        useRootNavigator: true,
+        // useRootNavigator: true,
         // useSafeArea: true,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),

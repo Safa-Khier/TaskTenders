@@ -95,7 +95,7 @@ class _CreateBidScreenState extends State<CreateOfferSheet> {
 
       showDialog<String>(
           context: context,
-          builder: (BuildContext context) => AlertDialog(
+          builder: (BuildContext chieldContext) => AlertDialog(
                 title: Text("Apply for Job"),
                 content: Text("Are you sure you want to apply for this job?"),
                 actions: [
@@ -109,7 +109,7 @@ class _CreateBidScreenState extends State<CreateOfferSheet> {
                     child: Text("Apply"),
                     onPressed: () {
                       _jobService.addOfferOnJob(bid).then((value) {
-                        Navigator.of(context).pop();
+                        Navigator.of(chieldContext).pop();
                         Navigator.pop(context, true);
                       });
                     },

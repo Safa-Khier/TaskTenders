@@ -130,7 +130,7 @@ class _TaskerHomePageState extends State<TaskerHomePage> {
                     )
                   ]);
                 },
-                job: jobs[index],
+                job: filteredJobs[index],
               ),
             ],
           );

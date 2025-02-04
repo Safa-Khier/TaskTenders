@@ -87,54 +87,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   }
                 },
               ),
-              // const SizedBox(height: 20),
-              // Row(
-              //   children: <Widget>[
-              //     Expanded(
-              //       child: Container(
-              //         margin: const EdgeInsets.only(right: 10.0),
-              //         child: Divider(
-              //           color: Theme.of(context).primaryColor,
-              //           height: 50,
-              //           thickness: 1,
-              //         ),
-              //       ),
-              //     ),
-              //     Text(
-              //       'Or Register Using',
-              //       style: TextStyle(color: Theme.of(context).primaryColor),
-              //     ),
-              //     Expanded(
-              //       child: Container(
-              //         margin: const EdgeInsets.only(left: 10.0),
-              //         child: Divider(
-              //           color: Theme.of(context).primaryColor,
-              //           height: 50,
-              //           thickness: 1,
-              //         ),
-              //       ),
-              //     ),
-              //   ], //
-              // ),
-              // const SizedBox(height: 50),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.center,
-              //   children: [
-              //     ImageButton(
-              //       context: context,
-              //       onPressed: () {},
-              //       // color: Colors.white,
-              //       imagePath: 'lib/assets/external_images/apple_logo.png',
-              //     ),
-              //     const SizedBox(width: 25),
-              //     ImageButton(
-              //       context: context,
-              //       onPressed: () {},
-              //       // color: Colors.white,
-              //       imagePath: 'lib/assets/external_images/google_logo.png',
-              //     ),
-              //   ],
-              // ),
               const SizedBox(height: 40),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,

@@ -48,7 +48,7 @@ class _AddUpdatesSheetState extends State<AddUpdatesSheet> {
 
       showDialog<String>(
           context: context,
-          builder: (BuildContext context) => AlertDialog(
+          builder: (BuildContext chieldContext) => AlertDialog(
                 title: Text("Add New Update"),
                 content: Text("Are you sure you want to add this update?"),
                 actions: [
@@ -65,7 +65,7 @@ class _AddUpdatesSheetState extends State<AddUpdatesSheet> {
                       _jobService
                           .addNewUpdate(widget.job.id!, jobUpdate)
                           .then((value) {
-                        Navigator.of(context).pop();
+                        Navigator.of(chieldContext).pop();
                         Navigator.pop(context, true);
                         LoadingService.hideLoadingIndicator();
                       });
@@ -103,7 +103,6 @@ class _AddUpdatesSheetState extends State<AddUpdatesSheet> {
                   hintText: 'Enter a title for the update',
                   helperText: ' ',
                 ),
-                keyboardType: TextInputType.numberWithOptions(decimal: true),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Please provide a title';

@@ -397,7 +397,7 @@ class _TaskerJobDetailsPageState extends State<TaskerJobDetailsPage> {
         showDragHandle: true,
         // barrierColor: Colors.transparent,
         isScrollControlled: true,
-        useRootNavigator: true,
+        // useRootNavigator: true,
         // useSafeArea: true,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
