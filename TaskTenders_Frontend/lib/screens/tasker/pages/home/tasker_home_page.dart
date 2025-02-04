@@ -20,12 +20,26 @@ class _TaskerHomePageState extends State<TaskerHomePage> {
   final JobService _jobService = locator<JobService>();
 
   List<Job> jobs = [];
+  List<Job> filteredJobs = [];
   bool _isLoading = false;
+  String _searchQuery = '';
 
   @override
   void initState() {
     super.initState();
     refreshJobs();
+  }
+
+  void filterArray(String query) {
+    print('here');
+    setState(() {
+      _searchQuery = query;
+      filteredJobs = jobs.where((job) {
+        return job.title.toLowerCase().contains(query.toLowerCase()) ||
+            job.description.toLowerCase().contains(query.toLowerCase()) ||
+            job.jobType.toLowerCase().contains(query.toLowerCase());
+      }).toList();
+    });
   }
 
   Future<void> refreshJobs() async {
@@ -35,6 +49,7 @@ class _TaskerHomePageState extends State<TaskerHomePage> {
     _jobService.getBestMatchingJobs().then((value) {
       setState(() {
         jobs = value;
+        filteredJobs = value;
       });
     }).whenComplete(() {
       setState(() {
@@ -47,24 +62,41 @@ class _TaskerHomePageState extends State<TaskerHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-      appBar: AppBar(
-        title: const Text(
-          'tasktenders',
-          style: TextStyle(
-              color: Color(0xFF00CED1),
-              fontWeight: FontWeight.w600,
-              fontSize: 20),
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(105), // Extend height
+        child: AppBar(
+          title: const Text(
+            'tasktenders',
+            style: TextStyle(
+                color: Color(0xFF00CED1),
+                fontWeight: FontWeight.w600,
+                fontSize: 20),
+          ),
+          flexibleSpace: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 8),
+              child:
+                  Column(mainAxisAlignment: MainAxisAlignment.end, children: [
+                MainInput(
+                    hintText: 'Search',
+                    borderRadius: 10,
+                    leadingIcon: Icons.search,
+                    trailingIcon: Icons.clear,
+                    fontSize: 13,
+                    height: 36,
+                    color: Color(0xFF999999),
+                    onTextChanged: (str) => filterArray(str))
+              ])),
+          bottom: PreferredSize(
+              preferredSize: const Size.fromHeight(0),
+              child: Container(
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    border: Border(
+                        bottom: BorderSide(
+                            color: Color(0xFF000000).withAlpha(76),
+                            width: 0.33))),
+              )),
         ),
-        bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(0),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(
-                      bottom: BorderSide(
-                          color: Color(0xFF000000).withAlpha(76),
-                          width: 0.33))),
-            )),
       ),
       body: Padding(
           padding: EdgeInsets.symmetric(vertical: 10),
@@ -73,36 +105,36 @@ class _TaskerHomePageState extends State<TaskerHomePage> {
   }
 
   Widget _buildMatchingJobs() {
-    return Expanded(
-      child: RefreshIndicator(
-        onRefresh: refreshJobs,
-        child: ListView.builder(
-          itemCount: jobs.length,
-          itemBuilder: (context, index) {
-            return Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                spacing: 10,
-                children: [
-                  if (index == 0)
-                    Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 12),
-                        child: Text('Best matches for you',
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.w600))),
-                  TaskerJobCard(
-                    onTap: () {
-                      context.router.pushAll([
-                        TaskerJobDetailsRoute(
-                          jobId: jobs[index].id!,
-                          job: jobs[index],
-                        )
-                      ]);
-                    },
-                    job: jobs[index],
-                  )
-                ]);
-          },
-        ),
+    return RefreshIndicator(
+      onRefresh: refreshJobs,
+      child: ListView.builder(
+        itemCount: filteredJobs.length,
+        itemBuilder: (context, index) {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (index == 0)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12),
+                  child: Text(
+                    'Best matches for you',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+                  ),
+                ),
+              TaskerJobCard(
+                onTap: () {
+                  context.router.pushAll([
+                    TaskerJobDetailsRoute(
+                      jobId: filteredJobs[index].id!,
+                      job: filteredJobs[index],
+                    )
+                  ]);
+                },
+                job: jobs[index],
+              ),
+            ],
+          );
+        },
       ),
     );
   }

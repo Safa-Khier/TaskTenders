@@ -60,6 +60,7 @@ class _MainInputState extends State<MainInput> {
       width: widget.width,
       height: widget.maxLines == 1 ? widget.height : null,
       child: TextField(
+        onChanged: widget.onTextChanged,
         maxLines: widget.maxLines,
         keyboardType: widget.keyboardType,
         controller: widget.controller,

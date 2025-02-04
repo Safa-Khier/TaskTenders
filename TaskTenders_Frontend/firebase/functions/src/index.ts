@@ -2,7 +2,7 @@ import * as admin from "firebase-admin";
 import { GeoPoint } from "@google-cloud/firestore";
 import { PriorityQueue } from "@datastructures-js/priority-queue"; // Efficient Min-Heap
 // import { Storage } from "@google-cloud/storage";
-import { onDocumentCreated } from "firebase-functions/v2/firestore";
+// import { onDocumentCreated } from "firebase-functions/v2/firestore";
 import { onSchedule } from "firebase-functions/v2/scheduler";
 import { setGlobalOptions } from "firebase-functions/v2/options";
 
@@ -208,30 +208,15 @@ export async function matchTaskersToJobs() {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const cleanUpMatchingData = onSchedule("every 24 hours", async (_context) => {
   const matchingSnapshot = await db.collection("matching").get();
-  const currentTime = new Date().getTime();
 
   const batch = db.batch();
 
   matchingSnapshot.forEach((doc) => {
-    const matchTime = doc.createTime.toDate().getTime();
-    if (currentTime - matchTime >= 86400000) {
-      batch.delete(doc.ref);
-    }
+    batch.delete(doc.ref);
   });
 
   await batch.commit();
   console.log("Matching data cleaned up successfully.");
-});
-
-setGlobalOptions({
-  region: "us-central1", // ✅ Set region globally
-  timeoutSeconds: 540,   // ✅ Max timeout (9 minutes)
-  memory: "2GiB",         // ✅ Increase memory allocation
-  cpu: 2                 // ✅ More processing power
-});
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const onJobCreated = onDocumentCreated("jobs/{jobId}", async (_event) => {
   matchTaskersToJobs().then(() => {
     console.log("Tasker-Job matching completed successfully.");
     process.exit(0);
@@ -239,4 +224,11 @@ export const onJobCreated = onDocumentCreated("jobs/{jobId}", async (_event) => 
     console.error("Error running tasker-job matching:", error);
     process.exit(1);
   });
+});
+
+setGlobalOptions({
+  region: "us-central1", // ✅ Set region globally
+  timeoutSeconds: 540,   // ✅ Max timeout (9 minutes)
+  memory: "2GiB",         // ✅ Increase memory allocation
+  cpu: 2                 // ✅ More processing power
 });
